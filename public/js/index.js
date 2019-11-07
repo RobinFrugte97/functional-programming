@@ -7,23 +7,30 @@ const query = `
 	PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 	PREFIX edm: <http://www.europeana.eu/schemas/edm/>
 	PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-	SELECT ?cho ?printName ?placeName ?printImage ?date WHERE {
+	PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+	PREFIX gn: <http://www.geonames.org/ontology#>
+	
+	SELECT ?cho ?printName ?placeName ?printImage ?date ?lat ?long WHERE {
   		<https://hdl.handle.net/20.500.11840/termmaster6917> skos:narrower* ?place .
 	    ?place skos:prefLabel ?placeName .
-	    VALUES ?type {"prent" "Prent"} .
-	    ?cho dc:title ?printName ;
+  		?place skos:exactMatch/wgs84:lat ?lat .
+  		?place skos:exactMatch/wgs84:long ?long .
+  		?place skos:exactMatch/gn:parentCountry ?land .
+
+	   VALUES ?type {"prent" "Prent"} .
+	   ?cho dc:title ?printName ;
 	        dc:type ?type ;
 	        dct:spatial ?place ;
 	        edm:isShownBy ?printImage ;
   			dct:created ?date .
-    }`
+	}`
     
 function runQuery(queryUrl, query){
     fetch(queryUrl+"?query="+ encodeURIComponent(query) +"&format=json")
     .then(res => res.json())
     .then(json => {
         data = json.results.bindings
-        console.log(data);
+        // console.log(data);
         
     })
 }
