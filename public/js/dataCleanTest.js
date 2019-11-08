@@ -95,8 +95,8 @@ function entryToLowerCase(splitData) {
     // console.log(lowerCaseData)
 }
 
-function capitalizeFirstLetter(lowerCaseData){
-    let capitalizedData = lowerCaseData.map(entry => entry.charAt(0).toUpperCase())
+function capitalizeFirstLetter(lowerCaseData) {
+    let capitalizedData = lowerCaseData.map(entry => entry.charAt(0).toUpperCase() + entry.slice(1))
     console.log(capitalizedData)
 }
 
