@@ -25,14 +25,12 @@ const query = `
   			dct:created ?date .
 	}`
     
-function runQuery(queryUrl, query){
-    fetch(queryUrl+"?query="+ encodeURIComponent(query) +"&format=json")
-    .then(res => res.json())
-    .then(json => {
-        data = json.results.bindings
-        // console.log(data);
-        
-    })
+async function runQuery(queryUrl, query){
+    let getData = await fetch(queryUrl+"?query="+ encodeURIComponent(query) +"&format=json")
+    let responseData = await getData.json()
+    let data = responseData.results.bindings
+    console.log(data)
+    return data
 }
 
-runQuery(queryUrl, query);
+runQuery(queryUrl, query)
