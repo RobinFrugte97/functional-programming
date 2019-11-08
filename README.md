@@ -9,6 +9,26 @@ The goal of this course is to use d3 to clean data and make a dynamic representa
 
 My concept is about prints. The museum has a lot of different prints from all over the world. I liked the idea of plotting the prints on a map. Most prints originate from Japan so I decided to focus specificly on Japan. I want to use the coordinates of each print to plot them on a map of Japan.
 
+## Get started
+
+Install the dependencies...
+
+```bash
+cd app
+npm install
+```
+
+...then start the app:
+
+```bash
+nodemon server.js
+```
+
+Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+
+By default, the server will only respond to requests from localhost.
+
+
 ## Data
 
 The data I'm using comes from the API of [Netwerk digitaal erfgoed](https://www.netwerkdigitaalerfgoed.nl/), with my unique URL: https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-08/sparql
