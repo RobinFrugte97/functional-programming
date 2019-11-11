@@ -86,18 +86,19 @@ function cleaningData(enqueteData){
     let splitData = enqueteData.split("\n")
         .map(entry => entry.replace(';', ','))
     entryToLowerCase(splitData)
-    // console.log(splitData);
+    capitalizeFirstLetter(lowerCaseData)
+    console.log(capitalizedData)
+    
 }
 
 function entryToLowerCase(splitData) {
     let lowerCaseData = splitData.map(entry => entry.toLowerCase())
-    capitalizeFirstLetter(lowerCaseData)
-    // console.log(lowerCaseData)
+    return lowerCaseData
 }
 
 function capitalizeFirstLetter(lowerCaseData) {
     let capitalizedData = lowerCaseData.map(entry => entry.charAt(0).toUpperCase() + entry.slice(1))
-    console.log(capitalizedData)
+    return capitalizedData
 }
 
 let filterTrash = [
