@@ -30,35 +30,58 @@ const query = `
 	}`
     
 async function runQuery(queryUrl, query){
-    let getData = await fetch(queryUrl+"?query="+ encodeURIComponent(query) +"&format=json")
-    let responseData = await getData.json()
-    let data = responseData.results.bindings
-    console.log(data)
-    return data
+	let getData = await fetch(queryUrl + "?query=" + encodeURIComponent(query) + "&format=json")
+	.then(async res => {
+		let jsonData = await res.json()
+		console.log(jsonData.results.bindings);
+		
+		return data = jsonData.results.bindings
+	})	
 }
 
 runQuery(queryUrl, query)
 
-// set projection
-console.log(path)
 d3.json("../src/japan.json").then(topo => {
+	d3.select("body").append("svg")
 	console.log(topo);
+	drawPrints()
 	drawChart(topo)
 })
 
 function drawChart(topo) {
-	let svg = d3.select("body").append("svg")
+	console.log("Drawing map of Japan...");
+	
+	let svg = d3.select("svg")
 		.attr("width", width)
 		.attr("height", height)
+	//Control size and position of Japan within the screen.
 	projection
 		.scale(2000)
 		.translate([-3900, 1800])
-	let paths = svg.selectAll("path")
+	svg.selectAll("path")
 		.data(topo.features).enter()
 		.append("path")
 		.attr("class", "feature")
 		.attr("d", path)
 		.style("fill", "lightgreen")
+	
+
+}
+
+function drawPrints() {
+		console.log("Drawing prints on the map..");
+	aa = [139.69171, 35.6895];
+	bb = [139.69171, 35.6895];
+		
+        d3.select("svg").selectAll("circle")
+			.data([aa, bb]).enter()
+			.append("circle")
+			// .attr("src", data.printImage)
+            .attr("cx", function (d) { console.log(projection(d)); return projection(d)[0]; })
+            .attr("cy", function (d) { return projection(d)[1]; })
+            .attr("r", "8px")
+			.attr("fill", "red")
+			
 }
 
         // add states from topojson
@@ -69,11 +92,3 @@ function drawChart(topo) {
         //     .style("fill", "steelblue")
         //     .attr("d", path);
 
-        // add circles to svg
-        // svg.selectAll("circle")
-        //     .data([aa, bb]).enter()
-        //     .append("circle")
-        //     .attr("cx", function (d) { console.log(projection(d)); return projection(d)[0]; })
-        //     .attr("cy", function (d) { return projection(d)[1]; })
-        //     .attr("r", "8px")
-        //     .attr("fill", "red")
