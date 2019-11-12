@@ -34,13 +34,7 @@ function drawChart(topo) {
         //     .attr("class", "feature")
         //     .style("fill", "steelblue")
         //     .attr("d", path);
-
-        // put boarder around states 
-        // svg.append("path")
-        //     .datum(topojson.mesh(topo, topo.features, function (a, b) { return a !== b; }))
-        //     .attr("class", "mesh")
-        //     .attr("d", path);
-
+        
         // add circles to svg
         // svg.selectAll("circle")
         //     .data([aa, bb]).enter()
