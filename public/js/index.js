@@ -18,12 +18,12 @@ const query = `
   		?place skos:exactMatch/wgs84:long ?long .
   		?place skos:exactMatch/gn:parentCountry ?land .
 
-	   VALUES ?type {"prent" "Prent"} .
+	   VALUES ?type {"prent" "Prent" "prenten" "Prenten"} .
 	   ?cho dc:title ?printName ;
 	        dc:type ?type ;
 	        dct:spatial ?place ;
 	        edm:isShownBy ?printImage .
-	}`
+	} LIMIT 3`
 d3.json("../src/japan.json").then(topo => {
 	d3.select("body").append("svg")
 	console.log(topo);
@@ -31,20 +31,21 @@ d3.json("../src/japan.json").then(topo => {
 	drawPrints(topo)
 })
     
-function fetchData(queryUrl, query){
-	fetch(queryUrl + "?query=" + encodeURIComponent(query) + "&format=json")
-	.then(res => res.json())
-	.then(jsonRes => jsonRes.results.bindings)
-	.then(data => data = data.map(cleanData))
+async function fetchData(queryUrl, query){
+	const res = await fetch(queryUrl + "?query=" + encodeURIComponent(query) + "&format=json")
+	const jsonRes = await res.json()
+	let data = jsonRes.results.bindings
+	return data = data.map(cleanData)
 }
 
 
 function drawChart(topo) {
-	// console.log("Drawing map of Japan...");
+	console.log("Drawing map of Japan...");
 	let svg = d3.select("svg")
 		.attr("width", width)
 		.attr("height", height)
-	svg.selectAll("path")
+	let japan = svg.append("g")
+	japan.selectAll("path")
 		.data(topo.features).enter()
 		.append("path")
 		.attr("class", "feature")
@@ -53,21 +54,26 @@ function drawChart(topo) {
 }
 
 function drawPrints(topo) {
-	// let data = fetchData(queryUrl, query)
-	// console.log(data);
+	let data = fetchData(queryUrl, query)
+	let projection = setChartPosition(topo)[1]
+	data.then(data => {
+		data.forEach(data => {
+			data.lat = Number(data.lat)
+			data.long = Number(data.long)
+		})
+		console.log(data)
+		console.log("Drawing prints on the map..");
+		//Temporary test coordinates
+		d3.select("svg").selectAll("image")
+			.data(data).enter()
+			.append("svg:image")
+			.attr("xlink:href", data.printImage)
+			.attr("x", function (d) { return projection([d.long, d.lat])[0] })
+			.attr("y", function (d) { return projection([d.long, d.lat])[1] })
+			.attr("width", "3em")
+			.attr("height", "2em")
+	})
 	
-	console.log("Drawing prints on the map..");
-	//Temporary test coordinates
-	aa = [139.69171, 35.6895];
-	bb = [139.69171, 35.6895];
-	d3.select("svg").selectAll("circle")
-		.data([aa, bb]).enter()
-		.append("circle")
-		// .attr("src", data.printImage)
-		.attr("cx", function (d) { console.log(d); return setChartPosition(topo)[1](d)[0] })
-		.attr("cy", function (d) { return setChartPosition(topo)[1](d)[1] })
-		.attr("r", "8px")
-		.attr("fill", "red")
 }
 
 function setChartPosition(topo) {
