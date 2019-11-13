@@ -1,8 +1,5 @@
-
-var projection = d3.geoMercator();
-var path = d3.geoPath().projection(projection);
-let width = 1900
-let height = 700
+const width = 1900
+const height = 800
 const queryUrl = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-08/sparql"
 const query = `
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -14,7 +11,7 @@ const query = `
 	PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 	PREFIX gn: <http://www.geonames.org/ontology#>
 	
-	SELECT ?cho ?printName ?placeName ?printImage ?date ?lat ?long WHERE {
+	SELECT ?printName ?placeName ?printImage ?lat ?long WHERE {
   		<https://hdl.handle.net/20.500.11840/termmaster6917> skos:narrower* ?place .
 	    ?place skos:prefLabel ?placeName .
   		?place skos:exactMatch/wgs84:lat ?lat .
@@ -25,70 +22,79 @@ const query = `
 	   ?cho dc:title ?printName ;
 	        dc:type ?type ;
 	        dct:spatial ?place ;
-	        edm:isShownBy ?printImage ;
-  			dct:created ?date .
+	        edm:isShownBy ?printImage .
 	}`
-    
-async function runQuery(queryUrl, query){
-	let getData = await fetch(queryUrl + "?query=" + encodeURIComponent(query) + "&format=json")
-	.then(async res => {
-		let jsonData = await res.json()
-		console.log(jsonData.results.bindings);
-		
-		return data = jsonData.results.bindings
-	})	
-}
-
-runQuery(queryUrl, query)
-
 d3.json("../src/japan.json").then(topo => {
 	d3.select("body").append("svg")
 	console.log(topo);
-	drawPrints()
 	drawChart(topo)
+	drawPrints(topo)
 })
+    
+function fetchData(queryUrl, query){
+	fetch(queryUrl + "?query=" + encodeURIComponent(query) + "&format=json")
+	.then(res => res.json())
+	.then(jsonRes => jsonRes.results.bindings)
+	.then(data => data = data.map(cleanData))
+}
+
 
 function drawChart(topo) {
-	console.log("Drawing map of Japan...");
-	
+	// console.log("Drawing map of Japan...");
 	let svg = d3.select("svg")
 		.attr("width", width)
 		.attr("height", height)
-	//Control size and position of Japan within the screen.
-	projection
-		.scale(2000)
-		.translate([-3900, 1800])
 	svg.selectAll("path")
 		.data(topo.features).enter()
 		.append("path")
 		.attr("class", "feature")
-		.attr("d", path)
+		.attr("d", setChartPosition(topo)[0])
 		.style("fill", "lightgreen")
-	
-
 }
 
-function drawPrints() {
-		console.log("Drawing prints on the map..");
+function drawPrints(topo) {
+	// let data = fetchData(queryUrl, query)
+	// console.log(data);
+	
+	console.log("Drawing prints on the map..");
+	//Temporary test coordinates
 	aa = [139.69171, 35.6895];
 	bb = [139.69171, 35.6895];
-		
-        d3.select("svg").selectAll("circle")
-			.data([aa, bb]).enter()
-			.append("circle")
-			// .attr("src", data.printImage)
-            .attr("cx", function (d) { console.log(projection(d)); return projection(d)[0]; })
-            .attr("cy", function (d) { return projection(d)[1]; })
-            .attr("r", "8px")
-			.attr("fill", "red")
-			
+	d3.select("svg").selectAll("circle")
+		.data([aa, bb]).enter()
+		.append("circle")
+		// .attr("src", data.printImage)
+		.attr("cx", function (d) { console.log(d); return setChartPosition(topo)[1](d)[0] })
+		.attr("cy", function (d) { return setChartPosition(topo)[1](d)[1] })
+		.attr("r", "8px")
+		.attr("fill", "red")
 }
 
-        // add states from topojson
-        // svg.selectAll("path")
-        //     .data(topo.features).enter()
-        //     .append("path")
-        //     .attr("class", "feature")
-        //     .style("fill", "steelblue")
-        //     .attr("d", path);
+function setChartPosition(topo) {
+	let projection = d3.geoMercator().scale(150).center(d3.geoCentroid(topo))
+		.translate([width / 2, height / 2]);
+	let path = d3.geoPath().projection(projection);
 
+	// using the path determine the bounds of the current map and use 
+	// these to determine better values for the scale and translation
+	let bounds = path.bounds(topo);
+	let hscale = 150 * width / (bounds[1][0] - bounds[0][0]);
+	let vscale = 150 * height / (bounds[1][1] - bounds[0][1]);
+	let scale = (hscale < vscale) ? hscale : vscale;
+
+	// new projection
+	projection = d3.geoMercator().center(d3.geoCentroid(topo))
+		.scale(scale).translate([width - (bounds[0][0] + bounds[1][0]) / 2,
+		height - (bounds[0][1] + bounds[1][1]) / 2]);
+	path = path.projection(projection);
+	return [path, projection]
+}
+
+function cleanData(row) {
+	let result = {}
+	Object.entries(row)
+		.forEach(([key, propValue]) => {
+			result[key] = propValue.value
+		})
+	return result
+}
