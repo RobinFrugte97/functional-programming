@@ -81,34 +81,49 @@ Dichten ; blowen
 Games, tekenen, gitaar, muziek maken
 Films en series
 `
-cleaningData(enqueteData)
+let filterTrash = {
+    seperators: [";", " ; ", " ;", ","],
+    trash: ["hobbies zijn voor de delusionals", "geen", "nvt", "n.v.t"]
+}
+cleaningData(enqueteData, filterTrash)
 
-async function cleaningData(data){
+async function cleaningData(data, filterTrash){
+    regexBuilder(filterTrash)
     data = await splittingEntries(data)
+    data = await replacingCharacters(data)
     data = await entryToLowerCase(data)
-    // data = await filterEntries(data)
+    data = await filterEntries(data, regexps)
     data = await capitalizeFirstLetter(data)
     console.log(data)
     
 }
 
 function splittingEntries(data){
-    return data = data.split("\n")
-        .map(entry => entry.replace(/;/g, ','))
+    return data.split("\n")
+}
+
+function replacingCharacters(data){
+    return data.map(entry => entry.replace(/;/g, ','))
 }
 
 function entryToLowerCase(data) {
-    return data = data.map(entry => entry.toLowerCase())
-    
+    return data.map(entry => entry.toLowerCase())
+}
+
+function regexBuilder(filterTrash) {
+    let trashEntryRegex = new RegExp(filterTrash.trash.join("|"), 'gi')
+    let seperatorRegex = new RegExp(filterTrash.seperators.join("|"), 'gi')
+    return regexps = {trashEntryRegex, seperatorRegex}
+}
+
+function filterEntries(data, regexps) {
+    data = data.filter(entry => entry.replace(regexps.trashEntryRegex, ''))
+    return data = data.filter(entry => entry.replace(regexps.seperatorRegex, ', '))
 }
 
 function capitalizeFirstLetter(data) {
-    return data = data.map(entry => entry.charAt(0)
-        .toUpperCase() + entry.slice(1))
+    return data.map(entry => entry.charAt(0)
+                .toUpperCase() + entry.slice(1))
 }
 
-let filterTrash = [
-    [";", " ; ", " ;", ",", ", "],
-    ["hobbies zijn voor de delusionals", ""]
-]
 
