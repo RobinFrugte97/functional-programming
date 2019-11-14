@@ -94,8 +94,7 @@ async function cleaningData(data, filterTrash){
     data = await entryToLowerCase(data)
     data = await filterEntries(data, regexps)
     data = await capitalizeFirstLetter(data)
-    console.log(data)
-    
+    console.log(data)  
 }
 
 function splittingEntries(data){
