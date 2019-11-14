@@ -82,23 +82,26 @@ Games, tekenen, gitaar, muziek maken
 Films en series
 `
 
-function cleaningData(enqueteData){
-    let splitData = enqueteData.split("\n")
-        .map(entry => entry.replace(';', ','))
-    entryToLowerCase(splitData)
-    capitalizeFirstLetter(lowerCaseData)
+async function cleaningData(enqueteData){
+    let splitData = await splittingEntries(enqueteData)
+    let lowerCaseData = await entryToLowerCase(splitData)
+    let capitalizedData = await capitalizeFirstLetter(lowerCaseData)
     console.log(capitalizedData)
     
 }
 
+function splittingEntries(enqueteData){
+    return splitData = enqueteData.split("\n")
+        .map(entry => entry.replace(/;/g, ','))
+}
+
 function entryToLowerCase(splitData) {
-    let lowerCaseData = splitData.map(entry => entry.toLowerCase())
-    return lowerCaseData
+    return lowerCaseData = splitData.map(entry => entry.toLowerCase())
+    
 }
 
 function capitalizeFirstLetter(lowerCaseData) {
-    let capitalizedData = lowerCaseData.map(entry => entry.charAt(0).toUpperCase() + entry.slice(1))
-    return capitalizedData
+    return capitalizedData = lowerCaseData.map(entry => entry.charAt(0).toUpperCase() + entry.slice(1))
 }
 
 let filterTrash = [

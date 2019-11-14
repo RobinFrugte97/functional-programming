@@ -11,24 +11,24 @@ const query = `
 	PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 	PREFIX gn: <http://www.geonames.org/ontology#>
 	
-	SELECT ?printName ?placeName ?printImage ?lat ?long WHERE {
+	SELECT ?objectName ?placeName ?objectImage ?lat ?long WHERE {
   		<https://hdl.handle.net/20.500.11840/termmaster6917> skos:narrower* ?place .
 	    ?place skos:prefLabel ?placeName .
   		?place skos:exactMatch/wgs84:lat ?lat .
   		?place skos:exactMatch/wgs84:long ?long .
   		?place skos:exactMatch/gn:parentCountry ?land .
 
-	   VALUES ?type {"prent" "Prent" "prenten" "Prenten"} .
-	   ?cho dc:title ?printName ;
+	   
+	   ?cho dc:title ?objectName ;
 	        dc:type ?type ;
 	        dct:spatial ?place ;
-	        edm:isShownBy ?printImage .
-	} LIMIT 3`
+	        edm:isShownBy ?objectImage .
+	} ORDER BY ?placeName LIMIT 50`
+
 d3.json("../src/japan.json").then(topo => {
 	d3.select("body").append("svg")
-	console.log(topo);
 	drawChart(topo)
-	drawPrints(topo)
+	drawObjects(topo)
 })
     
 async function fetchData(queryUrl, query){
@@ -38,9 +38,8 @@ async function fetchData(queryUrl, query){
 	return data = data.map(cleanData)
 }
 
-
 function drawChart(topo) {
-	console.log("Drawing map of Japan...");
+	console.log("Drawing map of Japan...")
 	let svg = d3.select("svg")
 		.attr("width", width)
 		.attr("height", height)
@@ -53,27 +52,25 @@ function drawChart(topo) {
 		.style("fill", "lightgreen")
 }
 
-function drawPrints(topo) {
+function drawObjects(topo) {
 	let data = fetchData(queryUrl, query)
 	let projection = setChartPosition(topo)[1]
 	data.then(data => {
-		data.forEach(data => {
-			data.lat = Number(data.lat)
-			data.long = Number(data.long)
+		data.forEach(entry => {
+			entry.lat = Number(entry.lat)
+			entry.long = Number(entry.long)
 		})
-		console.log(data)
-		console.log("Drawing prints on the map..");
-		//Temporary test coordinates
-		d3.select("svg").selectAll("image")
+		console.log("Drawing objects on the map..")
+		d3.select("svg").selectAll("images")
 			.data(data).enter()
-			.append("svg:image")
-			.attr("xlink:href", data.printImage)
+			.append("image")
+			.attr("xlink:href", d => d.objectImage)
 			.attr("x", function (d) { return projection([d.long, d.lat])[0] })
 			.attr("y", function (d) { return projection([d.long, d.lat])[1] })
-			.attr("width", "3em")
+			.attr("width", "4em")
 			.attr("height", "2em")
+			.style('transform', 'translate(-1em, -1em)')
 	})
-	
 }
 
 function setChartPosition(topo) {
@@ -84,8 +81,8 @@ function setChartPosition(topo) {
 	// using the path determine the bounds of the current map and use 
 	// these to determine better values for the scale and translation
 	let bounds = path.bounds(topo);
-	let hscale = 150 * width / (bounds[1][0] - bounds[0][0]);
-	let vscale = 150 * height / (bounds[1][1] - bounds[0][1]);
+	let hscale = 180 * width / (bounds[1][0] - bounds[0][0]);
+	let vscale = 180 * height / (bounds[1][1] - bounds[0][1]);
 	let scale = (hscale < vscale) ? hscale : vscale;
 
 	// new projection
