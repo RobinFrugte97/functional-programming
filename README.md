@@ -1,6 +1,6 @@
 # Livelink
 
-[Prenten van Japan](https://robinfrugte97.github.io/functional-programming/public/index.html)
+[Objecten van Japan](https://robinfrugte97.github.io/functional-programming/public/index.html)
 
 # Functional programming
 
@@ -11,7 +11,7 @@ The goal of this course is to use d3 to clean data and make a dynamic representa
 
 ![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/schetsPrentenJapan.jpg)
 
-My concept is about prints. The museum has a lot of different prints from all over the world. I liked the idea of plotting the prints on a map. Most prints originate from Japan so I decided to focus specificly on Japan. I want to use the coordinates of each print to plot them on a map of Japan.
+My concept is about prints. The museum has a lot of different objects from all over the world. I liked the idea of plotting the objects on a map. I decided to focus specifically on Japan, because Japan has a lot of interesting objects. I want to use the coordinates of each object to plot them on a map of Japan.
 
 ## Get started
 
@@ -37,16 +37,31 @@ By default, the server will only respond to requests from localhost.
 
 The data I'm using comes from the API of [Netwerk digitaal erfgoed](https://www.netwerkdigitaalerfgoed.nl/), with my unique URL: https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-08/sparql
 
-I'm gathering data about all prints in Japan to then plot them on a map of Japan to see where in Japan most prints originate from.
+### NMVW data
+
+The NMVW is a collective of multiple museums. They have a large [collection](http://collectie.wereldculturen.nl/) of items, ranging from Japanese prints from the Edo era to all sorts of clothes from Indonesia. Every object in the collection is documented on their [site](http://collectie.wereldculturen.nl/).
+
+Most items have at least:
+
+- A title or name
+- An image showing the object
+- A date from when the object originates
+- A location from where the object originates
+- A discription about the object
+- 
+
+### Used data
+
+I'm gathering data about all objects in Japan to then plot them on a map of Japan to see where in Japan most objects originate from.
 
 I'm getting the following data:
-- Print name
-- The date the print was created
+- Object name
+- The date the object was created
 - The geographic location in longitude and latitude
-- The place name the print originates from
-- The image of the print
+- The place name the object originates from
+- The image of the object
 
-The query I'm using: 
+The SPARQL query I'm using to retrieve the aforementioned data for my application: 
 
 ```
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -65,7 +80,6 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
   		?place skos:exactMatch/wgs84:long ?long .
   		?place skos:exactMatch/gn:parentCountry ?land .
 
-	   VALUES ?type {"prent" "Prent"} .
 	   ?cho dc:title ?printName ;
 	        dc:type ?type ;
 	        dct:spatial ?place ;
@@ -73,3 +87,13 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
   			dct:created ?date .
 	}
 ```
+### Original data
+
+![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/oldData.jpg)
+
+This is the original data I'm getting from the SPARQL query. It's already pretty clean and almost ready for use. As you can see the data is nested in an object. This is something I will change. The geographic coordinates latitude and longitude come as type `string`. If I want to plot these coordinates I will have to change them to type `number`.
+
+
+![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/newData.jpg)
+
+This is the data how I'm using it in my application after doing a small bit of cleaning. As you can see the nested data is gone and the coordinates are `number`'s. 

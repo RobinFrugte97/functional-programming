@@ -14,7 +14,7 @@ h1 {
     text-align: center;
 }
 image {
-    transform: 'translate(-1em, -1em)';
+    transform: translate(-1em, -1em);
     width: 4em;
 	height: 2em;
 }
