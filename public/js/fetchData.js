@@ -5,12 +5,16 @@ export async function fetchData(queryUrl, query) {
     return data = data.map(cleanData)
 }
 
-//Clean function Laurens
 function cleanData(row) {
-    let result = {}
+    //Object function Laurens
+    let result = []
     Object.entries(row)
         .forEach(([key, propValue]) => {
             result[key] = propValue.value
         })
+    result.forEach(entry => {
+            entry.lat = parseFloat(entry.lat)
+            entry.long = parseFloat(entry.long)
+    })
     return result
 }

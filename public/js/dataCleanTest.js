@@ -1,4 +1,4 @@
-var enqueteData = `Gamen, uitgaan
+let enqueteData = `Gamen, uitgaan
 handbal
 Tekenen; ukelele spelen; schilderen; koken; bakken; haken; films; video's maken; fotografie
 Sporten; muziek luisteren; series kijken; films kijken; met vrienden uithangen
@@ -81,28 +81,29 @@ Dichten ; blowen
 Games, tekenen, gitaar, muziek maken
 Films en series
 `
+cleaningData(enqueteData)
 
-async function cleaningData(enqueteData){
-    let splitData = await splittingEntries(enqueteData)
-    let lowerCaseData = await entryToLowerCase(splitData)
-    let filterData = await filterEntries(lowerCaseData)
-    // let capitalizedData = await capitalizeFirstLetter(filterData)
-    // console.log(capitalizedData)
+async function cleaningData(data){
+    data = await splittingEntries(data)
+    data = await entryToLowerCase(data)
+    // data = await filterEntries(data)
+    data = await capitalizeFirstLetter(data)
+    console.log(data)
     
 }
 
-function splittingEntries(enqueteData){
-    return splitData = enqueteData.split("\n")
+function splittingEntries(data){
+    return data = data.split("\n")
         .map(entry => entry.replace(/;/g, ','))
 }
 
-function entryToLowerCase(splitData) {
-    return lowerCaseData = splitData.map(entry => entry.toLowerCase())
+function entryToLowerCase(data) {
+    return data = data.map(entry => entry.toLowerCase())
     
 }
 
-function capitalizeFirstLetter(lowerCaseData) {
-    return capitalizedData = lowerCaseData.map(entry => entry.charAt(0)
+function capitalizeFirstLetter(data) {
+    return data = data.map(entry => entry.charAt(0)
         .toUpperCase() + entry.slice(1))
 }
 
@@ -111,4 +112,3 @@ let filterTrash = [
     ["hobbies zijn voor de delusionals", ""]
 ]
 
-cleaningData(enqueteData)
