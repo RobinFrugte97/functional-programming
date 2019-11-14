@@ -48,7 +48,7 @@ Most items have at least:
 - A date from when the object originates
 - A location from where the object originates
 - A discription about the object
-- 
+
 
 ### Used data
 
