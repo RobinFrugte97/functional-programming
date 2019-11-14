@@ -9,8 +9,8 @@ export function drawVis(chartLocation, data) {
 function drawChart(topo) {
     console.log("Drawing map of Japan...")
     let svg = d3.select("svg")
-    let japan = svg.append("g")
-    japan.selectAll("path")
+    let chartContainer = svg.append("g")
+    chartContainer.selectAll("path")
         .data(topo.features).enter()
         .append("path")
             .attr("class", "feature")
@@ -21,8 +21,8 @@ function drawObjects(topo, data) {
     let projection = setElementPosition(topo)[1]
     data.then(data => {
         data.forEach(entry => {
-            entry.lat = Number(entry.lat)
-            entry.long = Number(entry.long)
+            entry.lat = parseFloat(entry.lat)
+            entry.long = parseFloat(entry.long)
         })
         console.log("Drawing objects on the map..")
         d3.select("svg").selectAll("image")
