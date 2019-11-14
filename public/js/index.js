@@ -1,5 +1,5 @@
-import { drawVis } from './drawVis.js' 
-import { fetchData } from './fetchData.js'
+import { drawVis } from './modules/drawVis.js' 
+import { fetchData } from './modules/fetchData.js'
 
 
 const chartLocation = "../src/japan.json"
