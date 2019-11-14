@@ -1,5 +1,6 @@
 const width = 1900
 const height = 800
+const chartLocation = "../src/japan.json"
 const queryUrl = "https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-08/sparql"
 const query = `
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -25,12 +26,14 @@ const query = `
 	        edm:isShownBy ?objectImage .
 	} ORDER BY ?placeName LIMIT 50`
 
-d3.json("../src/japan.json").then(topo => {
-	d3.select("body").append("svg")
-	drawChart(topo)
-	drawObjects(topo)
-})
-    
+function drawVis(chartLocation){
+	d3.json(chartLocation).then(topo => {
+		d3.select("body").append("svg")
+		drawChart(topo)
+		drawObjects(topo)
+	})
+}  
+
 async function fetchData(queryUrl, query){
 	const res = await fetch(queryUrl + "?query=" + encodeURIComponent(query) + "&format=json")
 	const jsonRes = await res.json()
@@ -47,9 +50,9 @@ function drawChart(topo) {
 	japan.selectAll("path")
 		.data(topo.features).enter()
 		.append("path")
-		.attr("class", "feature")
-		.attr("d", setChartPosition(topo)[0])
-		.style("fill", "lightgreen")
+			.attr("class", "feature")
+			.attr("d", setChartPosition(topo)[0])
+			.style("fill", "lightgreen")
 }
 
 function drawObjects(topo) {
@@ -64,12 +67,12 @@ function drawObjects(topo) {
 		d3.select("svg").selectAll("images")
 			.data(data).enter()
 			.append("image")
-			.attr("xlink:href", d => d.objectImage)
-			.attr("x", function (d) { return projection([d.long, d.lat])[0] })
-			.attr("y", function (d) { return projection([d.long, d.lat])[1] })
-			.attr("width", "4em")
-			.attr("height", "2em")
-			.style('transform', 'translate(-1em, -1em)')
+				.attr("xlink:href", d => d.objectImage)
+				.attr("x", function (d) { return projection([d.long, d.lat])[0] })
+				.attr("y", function (d) { return projection([d.long, d.lat])[1] })
+				.attr("width", "4em")
+				.attr("height", "2em")
+				.style('transform', 'translate(-1em, -1em)')
 	})
 }
 
@@ -93,6 +96,7 @@ function setChartPosition(topo) {
 	return [path, projection]
 }
 
+//Clean function Laurens
 function cleanData(row) {
 	let result = {}
 	Object.entries(row)
@@ -101,3 +105,5 @@ function cleanData(row) {
 		})
 	return result
 }
+
+drawVis(chartLocation)

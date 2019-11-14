@@ -85,8 +85,9 @@ Films en series
 async function cleaningData(enqueteData){
     let splitData = await splittingEntries(enqueteData)
     let lowerCaseData = await entryToLowerCase(splitData)
-    let capitalizedData = await capitalizeFirstLetter(lowerCaseData)
-    console.log(capitalizedData)
+    let filterData = await filterEntries(lowerCaseData)
+    // let capitalizedData = await capitalizeFirstLetter(filterData)
+    // console.log(capitalizedData)
     
 }
 
@@ -101,7 +102,8 @@ function entryToLowerCase(splitData) {
 }
 
 function capitalizeFirstLetter(lowerCaseData) {
-    return capitalizedData = lowerCaseData.map(entry => entry.charAt(0).toUpperCase() + entry.slice(1))
+    return capitalizedData = lowerCaseData.map(entry => entry.charAt(0)
+        .toUpperCase() + entry.slice(1))
 }
 
 let filterTrash = [
