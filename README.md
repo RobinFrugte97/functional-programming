@@ -4,7 +4,7 @@
 
 # Functional programming
 
-The goal of this course is to use d3 to clean data and make a dynamic representation (data visualisarion); data is functionally transformed to a visualisation of museum objects from [NMVW](http://collectie.wereldculturen.nl/).
+The goal of this course is to use d3 to clean data and make a dynamic representation (data visualisation); data is functionally transformed to a visualisation of museum objects from [NMVW](http://collectie.wereldculturen.nl/).
 More about functional programming can be found in my [wiki](https://github.com/RobinFrugte97/functional-programming/wiki/Functional-programming).
 
 
