@@ -5,13 +5,19 @@
 # Functional programming
 
 The goal of this course is to use d3 to clean data and make a dynamic representation (data visualisarion); data is functionally transformed to a visualisation of museum objects from [NMVW](http://collectie.wereldculturen.nl/).
+More about functional programming can be found in my [wiki](https://github.com/RobinFrugte97/functional-programming/wiki/Functional-programming).
 
 
-# Prints
+# Concept
 
-![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/schetsPrentenJapan.jpg)
+![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/screenshotEveryObject.png)
 
-My concept is about prints. The museum has a lot of different objects from all over the world. I liked the idea of plotting the objects on a map. I decided to focus specifically on Japan, because Japan has a lot of interesting objects. I want to use the coordinates of each object to plot them on a map of Japan.
+My concept is about showing object images on a chart. The museum has a lot of different objects from all over the world. I liked the idea of plotting the objects on a map. I decided to focus specifically on Japan, because Japan has a lot of interesting objects. I want to use the coordinates of each object to plot them on a map of Japan.
+
+
+# Wiki
+
+My progress, experiments, thoughts and code snippets can be found in my [wiki](https://github.com/RobinFrugte97/functional-programming/wiki/Functional-programming). My wiki consists of a more detailed page about my [concept](https://github.com/RobinFrugte97/functional-programming/wiki/Concept), a [daily progression](https://github.com/RobinFrugte97/functional-programming/wiki/Daily-progress) page which discribes what's going on day-to-day. There is a page dedicated to [functional programming](https://github.com/RobinFrugte97/functional-programming/wiki/Functional-programming), where I describe what functional programming is about and some examples from tutorials. I also describe some of my [experiments](https://github.com/RobinFrugte97/functional-programming/wiki/Experiments) throughout the project. I have also practised with [cleaning data in a functional manner](https://github.com/RobinFrugte97/functional-programming/wiki/Datacleaning).
 
 ## Get started
 
@@ -97,3 +103,11 @@ This is the original data I'm getting from the SPARQL query. It's already pretty
 ![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/newData.jpg)
 
 This is the data how I'm using it in my application after doing a small bit of cleaning. As you can see the nested data is gone and the coordinates are `number`'s. 
+
+---
+## Acknowledgements
+
+- [NMVW](http://collectie.wereldculturen.nl/), for giving us the opportunity to work with their data,
+- [Fun Fun Function](https://www.youtube.com/channel/UCO1cgjhGzsSYb1rsB4bFe4Q), for his course on functional programming,
+- [Kris Kuiper](https://github.com/kriskuiper/Functional-Programming-In-JavaScript), for his useful documentation of functional programming,
+- [d3 wiki](https://github.com/d3/d3/wiki), for helping me understand what d3 functions I need to use for my application.

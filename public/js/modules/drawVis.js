@@ -20,13 +20,13 @@ function drawChart(topo) {
 function drawObjects(topo, data) {
     let projection = setElementPosition(topo)[1]
         data.then(data => {
-        console.log("Drawing objects on the map..")
-        d3.select("svg").selectAll("image")
-            .data(data).enter()
-            .append("image")
-                .attr("xlink:href", d => d.objectImage)
-                .attr("x", function (d) { return projection([d.long, d.lat])[0] })
-                .attr("y", function (d) { return projection([d.long, d.lat])[1] })
+            console.log("Drawing objects on the map..")
+            d3.select("svg").selectAll("image")
+                .data(data).enter()
+                .append("image")
+                    .attr("xlink:href", d => d.objectImage)
+                    .attr("x", function (d) { return projection([d.long, d.lat])[0] })
+                    .attr("y", function (d) { return projection([d.long, d.lat])[1] })
         })
 }
 
