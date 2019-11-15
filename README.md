@@ -21,22 +21,9 @@ My progress, experiments, thoughts and code snippets can be found in my [wiki](h
 
 ## Get started
 
-Install the dependencies...
+Download the project,
 
-```bash
-cd app
-npm install
-```
-
-...then start the app:
-
-```bash
-nodemon server.js
-```
-
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-By default, the server will only respond to requests from localhost.
+Locate `public/index.html` and run it.
 
 
 ## Data
