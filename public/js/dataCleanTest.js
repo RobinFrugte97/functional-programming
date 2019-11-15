@@ -82,8 +82,8 @@ Games, tekenen, gitaar, muziek maken
 Films en series
 `
 let filterTrash = {
-    seperators: [";", " ; ", " ;", ",", ":"],
-    trash: ["hobbies zijn voor de delusionals", "geen", "nvt", "n.v.t"]
+    seperators: [";", " ; ", " ;", ", ",",", ":"],
+    trash: ["hobbies zijn voor de delusionals", "geen", "nvt", "n.v.t", ""]
 }
 cleaningData(enqueteData, filterTrash)
 
@@ -116,7 +116,7 @@ function regexBuilder(filterTrash) {
 }
 
 function filterEntries(data, regexps) {
-    return data.filter(entry => entry.replace(regexps.trashEntryRegex, ''))
+    return data.filter(entry => entry.replace(regexps.trashEntryRegex, 'geen hobby'))
 }
 
 function capitalizeFirstLetter(data) {
