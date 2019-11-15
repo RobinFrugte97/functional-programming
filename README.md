@@ -82,12 +82,12 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 ```
 ### Original data
 
-![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/oldData.jpg)
+![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/oldData.png)
 
 This is the original data I'm getting from the SPARQL query. It's already pretty clean and almost ready for use. As you can see the data is nested in an object. This is something I will change. The geographic coordinates latitude and longitude come as type `string`. If I want to plot these coordinates I will have to change them to type `number`.
 
 
-![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/newData.jpg)
+![](https://github.com/RobinFrugte97/functional-programming/raw/master/src/images/newData.png)
 
 This is the data how I'm using it in my application after doing a small bit of cleaning. As you can see the nested data is gone and the coordinates are `number`'s. 
 
